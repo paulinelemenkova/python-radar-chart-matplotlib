@@ -1,27 +1,38 @@
 #!/usr/bin/env python
 # coding: utf-8
+"""Radar (Spider) Charts with Python and Matplotlib
+
+Author:  Polina Lemenkova
+ORCID:   https://orcid.org/0000-0002-5759-1089
+Archive: https://doi.org/10.13140/RG.2.2.31562.82883
+License: MIT
+
+See README.md for details.
+"""
 import os
-import numpy as np
-import pandas as pd
+from math import pi
+
+import matplotlib.artist as martist
 import matplotlib.pylab as pylab
 import matplotlib.pyplot as plt
-import matplotlib.artist as martist
-from matplotlib.offsetbox import AnchoredText
-from math import pi
+import numpy as np
+import pandas as pd
 import seaborn as sns
+from matplotlib.offsetbox import AnchoredText
 
-os.chdir('/Users/pauline/Documents/Python')
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 df = pd.read_csv("Tab-Morph.csv")
 
 params = {'figure.figsize': (10, 5),
-    'figure.dpi': 300,
-        'figure.titlesize': 14,
-            'font.family': 'Palatino',
-                'axes.grid': True,
-                    'axes.labelsize': 8,
-                        'polaraxes.grid': True,
-                        }
+          'figure.dpi': 300,
+          'figure.titlesize': 14,
+          'font.family': 'Palatino',
+          'axes.grid': True,
+          'axes.labelsize': 8,
+          'polaraxes.grid': True,
+          }
 pylab.rcParams.update(params)
+
 
 def add_at(ax, t, loc=2):
     fp = dict(size=11)
@@ -29,24 +40,25 @@ def add_at(ax, t, loc=2):
     ax.add_artist(_at)
     return _at
 
+
 # show 6 different variables on our radar chart, so take them out and set as a np.array.
-labels=np.array(['Median', 'Max', '1stQ', '3rdQ', 'Min', 'Mean'])
-stats1=df.loc[1, labels].values
-stats2=df.loc[5, labels].values
-stats3=df.loc[12, labels].values
-stats4=df.loc[15, labels].values
-stats5=df.loc[18, labels].values
-stats6=df.loc[23, labels].values
+labels = np.array(['Median', 'Max', '1stQ', '3rdQ', 'Min', 'Mean'])
+stats1 = df.loc[1, labels].values
+stats2 = df.loc[5, labels].values
+stats3 = df.loc[12, labels].values
+stats4 = df.loc[15, labels].values
+stats5 = df.loc[18, labels].values
+stats6 = df.loc[23, labels].values
 
 # close the plot
-angles=np.linspace(0, 2*np.pi, len(labels), endpoint=False)
-angles=np.concatenate((angles,[angles[0]]))
-stats1=np.concatenate((stats1,[stats1[0]]))
-stats2=np.concatenate((stats2,[stats2[0]]))
-stats3=np.concatenate((stats3,[stats3[0]]))
-stats4=np.concatenate((stats4,[stats4[0]]))
-stats5=np.concatenate((stats5,[stats5[0]]))
-stats6=np.concatenate((stats6,[stats6[0]]))
+angles = np.linspace(0, 2*np.pi, len(labels), endpoint=False)
+angles = np.concatenate((angles, [angles[0]]))
+stats1 = np.concatenate((stats1, [stats1[0]]))
+stats2 = np.concatenate((stats2, [stats2[0]]))
+stats3 = np.concatenate((stats3, [stats3[0]]))
+stats4 = np.concatenate((stats4, [stats4[0]]))
+stats5 = np.concatenate((stats5, [stats5[0]]))
+stats6 = np.concatenate((stats6, [stats6[0]]))
 
 fig = plt.figure()
 fig.suptitle('Radar chart for the bathymetry of the Mariana Trench',
@@ -58,7 +70,7 @@ ax.plot(angles, stats1, 'o-', linewidth=2)
 ax.fill(angles, stats1, c='g', alpha=0.2)
 ax.set_thetagrids(angles * 180/np.pi, labels)
 plt.title('profile (nr.1)')
-#ax.annotate('(A)', xy=(1.02, .90), xycoords="axes fraction")
+# ax.annotate('(A)', xy=(1.02, .90), xycoords="axes fraction")
 add_at(ax, "A")
 
 # subplot 2
